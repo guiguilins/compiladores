@@ -63,7 +63,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 1;
                     }
-                    else if(c == '\"'){
+                    else if(c == '\"' ||  c == '\''){
                         lexema.append(c);
                         estado = 4;
                     }
@@ -153,7 +153,7 @@ public class Lexico {
                         throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
                     }
                 case 5:
-                    if(c == '\"'){
+                    if(c == '\"' || c == '\''){
                         lexema.append(c);
                         estado = 6;
                     }else{
@@ -170,7 +170,12 @@ public class Lexico {
                     else if(c == '>'){
                         lexema.append(c);
                         estado = 9;
-                    }else{
+                    }
+                   else if (c == '<') {
+                        lexema.append(c);
+                        estado = 10;
+                                  
+                  }else{
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                     }
@@ -223,6 +228,7 @@ public class Lexico {
                        this.back();
                        return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
                     }
+                    break;
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO); 
             }
