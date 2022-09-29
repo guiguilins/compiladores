@@ -152,15 +152,16 @@ public class Lexico {
                     else{
                         throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
                     }
+                    break;
                 case 5:
                     if(c == '\"' || c == '\''){
                         lexema.append(c);
                         estado = 6;
                     }else{
+                        lexema.append(c);
                         throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
                     }
-                case 6:
-                    this.back();
+                case 6:             
                     return new Token(lexema.toString(), Token.TIPO_CHAR); 
                 case 7:
                     if(c == '='){
