@@ -171,12 +171,8 @@ public class Lexico {
                     else if(c == '>'){
                         lexema.append(c);
                         estado = 9;
-                    }
-                   else if (c == '<') {
-                        lexema.append(c);
-                        estado = 10;
-                                  
-                  }else{
+            
+                    }else{
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                     }
