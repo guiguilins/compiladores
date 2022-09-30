@@ -88,16 +88,9 @@ public class Lexico {
                         lexema.append(c);
                         estado = 14;
                     }
-                    else if("int".contentEquals(lexema.toString()) ||
-                            "float".contentEquals(lexema.toString()) ||
-                            "char".contentEquals(lexema.toString()) ||
-                            "while".contentEquals(lexema.toString()) ||
-                            "if".contentEquals(lexema.toString()) ||
-                            "else".contentEquals(lexema.toString()) ||
-                            "main".contentEquals(lexema.toString())){
-                        lexema.append(c);
-                        estado = 15;        
-                    }
+                      
+                        
+                    
                     else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%'){
                         lexema.append(c);
                         estado = 16;
@@ -218,7 +211,17 @@ public class Lexico {
                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_ARITMETICO);
                     
                 case 17://identificador
-                    if(this.isLetra(c) || this.isDigito(c)){
+                 if("int".contentEquals(lexema.toString()) ||
+                "float".contentEquals(lexema.toString()) ||
+                "char".contentEquals(lexema.toString()) ||
+                "while".contentEquals(lexema.toString()) ||
+                "if".contentEquals(lexema.toString()) ||
+                "else".contentEquals(lexema.toString()) ||
+                "main".contentEquals(lexema.toString())){
+            lexema.append(c);
+            estado = 15;
+                }
+                    else if(this.isLetra(c) || this.isDigito(c)){
                         lexema.append(c);
                         estado = 17;
                     }else{
