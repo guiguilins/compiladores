@@ -198,7 +198,7 @@ public class Lexico {
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_ATRIBUICAO);
                     }
                 case 13: // É 13!
-                       this.back();
+                       //this.back();
                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                 case 14:
                        this.back();
@@ -218,8 +218,8 @@ public class Lexico {
                 "if".contentEquals(lexema.toString()) ||
                 "else".contentEquals(lexema.toString()) ||
                 "main".contentEquals(lexema.toString())){
-            lexema.append(c);
-            estado = 15;
+                     lexema.append(c);
+                     estado = 15;
                 }
                     else if(this.isLetra(c) || this.isDigito(c)){
                         lexema.append(c);

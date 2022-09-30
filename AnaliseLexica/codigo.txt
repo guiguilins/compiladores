@@ -1,2 +1,2 @@
-while main if else
+for
 $
