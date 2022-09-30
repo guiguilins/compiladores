@@ -63,7 +63,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 1;
                     }
-                    else if(c == '\"' ||  c == '\''){
+                    else if(c == '\''){
                         lexema.append(c);
                         estado = 4;
                     }
@@ -154,7 +154,7 @@ public class Lexico {
                     }
                     break;
                 case 5:
-                    if(c == '\"' || c == '\''){
+                    if(c == '\''){
                         lexema.append(c);
                         estado = 6;
                     }else{
@@ -227,7 +227,7 @@ public class Lexico {
                     }
                     break;
                 case 99:
-                    return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO); 
+                    return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
         }                
         return token;
