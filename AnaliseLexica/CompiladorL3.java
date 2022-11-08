@@ -11,6 +11,8 @@ public class CompiladorL3 {
         while((t = lexico.nextToken()) != null){
             System.out.println(t.toString());
         }
+        Sintatico1 sintatico = new Sintatico1(lexico);
+        sintatico.S();
 
     }
     
