@@ -11,7 +11,7 @@ public class CompiladorL3 {
         while((t = lexico.nextToken()) != null){
             System.out.println(t.toString());
         }
-        Sintatico1 sintatico = new Sintatico1(lexico);
+        Sintatico2 sintatico = new Sintatico2(new Lexico("/workspace/compiladores/AnaliseLexica/codigo.txt"));
         sintatico.S();
 
     }

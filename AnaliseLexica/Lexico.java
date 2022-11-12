@@ -13,6 +13,7 @@ public class Lexico {
         try {
             String conteudoStr;
             conteudoStr = new String(Files.readAllBytes(Paths.get(caminhoCodigoFonte)));
+            conteudoStr += '$';
             this.conteudo = conteudoStr.toCharArray();
             this.indiceConteudo = 0;                        
         } catch (IOException ex) {
@@ -99,7 +100,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 17;
                     }
-                    else if(c == '$'){
+                    else if(c == '$' && !hasNextChar()){
                         lexema.append(c);
                         estado = 99;
                         this.back();
