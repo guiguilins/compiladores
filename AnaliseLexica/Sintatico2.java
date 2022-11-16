@@ -125,7 +125,7 @@ public class Sintatico2 {
             }
             this.token = this.lexico.nextToken();
     
-            expressaoRelacional();
+            this.expressaoRelacional();
             this.token = this.lexico.nextToken();
             if (!token.getLexema().equals(")")) {
                 this.lexico.getColunaelinha(this.token.getLexema());
@@ -146,8 +146,6 @@ public class Sintatico2 {
         private void expressaoRelacional() throws FileNotFoundException {
 
         }
-
-    
 
     private void comandoBasico() throws FileNotFoundException{
         if(this.token.getTipo() == Token.TIPO_IDENTIFICADOR){
@@ -192,7 +190,7 @@ public class Sintatico2 {
           + this.token.getLexema());
    }
       this.token = this.lexico.nextToken();
-      this.E();
+      this.exprAritmetica();
       if(!this.token.getLexema().equals(";")){
         throw new RuntimeException("Erro na atribuição. Perto de: " 
           + this.token.getLexema());
@@ -200,37 +198,23 @@ public class Sintatico2 {
       this.token = this.lexico.nextToken();
    }
 
-   public void E(){
-    this.T();
-    this.El();
-}
-
-public void El(){
-    if(this.token.getTipo() == Token.TIPO_OPERADOR_ARITMETICO){
-        this.OP();
-        this.T();
-        this.El();
-    }else{
+   private void exprAritmetica(){
+    if(!(this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
+       (this.token.getLexema().equals("int ") ||
+        this.token.getLexema().equals("float ") ||
+        this.token.getLexema().equals("char "))){
+            this.termo();
+        }
+    if(!(this.token.getLexema().equals("+") || 
+       this.token.getLexema().equals("-"))){
+        throw new RuntimeException("Tava esperando um operador aritmético (+/-). Perto de: " 
+        + this.token.getLexema());
     }
-}
-
-public void T(){
-    if(this.token.getTipo() == Token.TIPO_IDENTIFICADOR || 
-       this.token.getTipo() == Token.TIPO_INTEIRO || 
-       this.token.getTipo() == Token.TIPO_REAL ){
-        this.token = this.lexico.nextToken();
-    }else{
-        throw new RuntimeException("Oxe, era pra ter um identificador  ou número pertinho de "
-         + this.token.getLexema());
-   }
-}
-
-public void OP(){
-if(this.token.getTipo() == Token.TIPO_OPERADOR_ARITMETICO){
     this.token = this.lexico.nextToken();
-}else{
-    throw new RuntimeException("Oxe, era pra ter um operador aritmético (+,-,/,*) pertinho de " 
-       + this.token.getLexema());
-  }
- }
+    this.exprAritmetica();
+}
+
+   private void termo() {
+}
+
 }
