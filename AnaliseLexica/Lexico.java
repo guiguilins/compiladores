@@ -1,8 +1,12 @@
 package AnaliseLexica;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 
 public class Lexico {
@@ -19,6 +23,25 @@ public class Lexico {
         } catch (IOException ex) {
             ex.printStackTrace();
         }        
+    }
+
+    public void getColunaelinha(String tokenError) throws FileNotFoundException {
+        try (BufferedReader inputStream = new BufferedReader(new FileReader("src//example.txt"))) {
+            Stream<String> read = inputStream.lines();
+            Object[] test = read.toArray();
+            for (int i = 0; i < test.length; i++) {
+                int value = test[i].toString().indexOf(tokenError);
+                if (value != -1) {
+                    System.out.println("Posição: " + value);
+                    System.out.println("Linha: " + i);
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     //Retorna próximo char

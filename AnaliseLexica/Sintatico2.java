@@ -1,5 +1,7 @@
 package AnaliseLexica;
 
+import java.io.FileNotFoundException;
+
 public class Sintatico2 {
     private Lexico lexico;
     private Token token;
@@ -8,7 +10,7 @@ public class Sintatico2 {
         this.lexico = lexico;
     }
 
-    public void Programa(){
+    public void Programa() throws FileNotFoundException{
         this.token = this.lexico.nextToken();
         if(!token.getLexema().equals("int ")){
             throw new RuntimeException("Oxe, cadê o int?");
@@ -37,7 +39,7 @@ public class Sintatico2 {
         } 
     }
 
-    private void bloco(){
+    private void bloco() throws FileNotFoundException{
         if(!this.token.getLexema().equals("{")){
             throw new RuntimeException("Oxe, tava esperando um \"{\" perto de "+ this.token.getLexema());
         }
@@ -57,7 +59,7 @@ public class Sintatico2 {
         this.token = this.lexico.nextToken();
 }
 
-    private void comando(){
+    private void comando() throws FileNotFoundException{
         if((this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
           (this.token.getLexema().equals("int ") ||
            this.token.getLexema().equals("float ") ||
@@ -96,7 +98,7 @@ public class Sintatico2 {
         
     }
 
-    private void iteracao(){
+    private void iteracao() throws FileNotFoundException{
         if(!(this.token.getLexema().equals("("))){
             throw new RuntimeException("Abre o parentese do while");
         }
@@ -109,10 +111,45 @@ public class Sintatico2 {
         this.comando();
     }
 
-    private void relacional() {
-    }
+   
+        private void relacional() throws FileNotFoundException {
+            if (!this.token.getLexema().equals("if")) {
+                this.lexico.getColunaelinha(this.token.getLexema());
+                throw new RuntimeException("Palavra reserva errada próxima: " + this.token.getLexema());
+            }
+    
+            this.token = this.lexico.nextToken();
+            if (!token.getLexema().equals("(")) {
+                this.lexico.getColunaelinha(this.token.getLexema());
+                throw new RuntimeException("Não existe parêntese aberta do operador 'if' próximo: " + this.token.getLexema());
+            }
+            this.token = this.lexico.nextToken();
+    
+            expressaoRelacional();
+            this.token = this.lexico.nextToken();
+            if (!token.getLexema().equals(")")) {
+                this.lexico.getColunaelinha(this.token.getLexema());
+                throw new RuntimeException("Não existe parêntese fechada do operador 'if' próximo: " + this.token.getLexema());
+            }
+    
+            this.token = this.lexico.nextToken();
+    
+            comando();
+            if (this.token.getLexema().equals("else")) {
+                this.token = this.lexico.nextToken();
+                comando();
+            } else {
+                return;
+            }
+        }
+        
+        private void expressaoRelacional() throws FileNotFoundException {
 
-    private void comandoBasico(){
+        }
+
+    
+
+    private void comandoBasico() throws FileNotFoundException{
         if(this.token.getTipo() == Token.TIPO_IDENTIFICADOR){
             this.atribuiao();
         }
