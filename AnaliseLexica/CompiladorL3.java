@@ -12,7 +12,7 @@ public class CompiladorL3 {
             System.out.println(t.toString());
         }
         Sintatico2 sintatico = new Sintatico2(new Lexico("/workspace/compiladores/AnaliseLexica/codigo.txt"));
-        sintatico.S();
+        sintatico.Programa();
 
     }
     
