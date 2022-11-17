@@ -111,7 +111,33 @@ public class Sintatico2 {
         this.comando();
     }
 
-   
+
+    private void comandoRepeticao() throws FileNotFoundException {
+        if (!this.token.getLexema().equals("while")) {
+            this.lexico.getColunaelinha(this.token.getLexema());
+            throw new RuntimeException("Word reserved wrong near: " + this.token.getLexema());
+        }
+
+        this.token = this.lexico.nextToken();
+        if (!token.getLexema().equals("(")) {
+            this.lexico.getColunaelinha(this.token.getLexema());
+            throw new RuntimeException(
+                    "Does not exists open paratheses of 'while' operator near: " + this.token.getLexema());
+        }
+        this.token = this.lexico.nextToken();
+
+        expressaoRelacional();
+
+        this.token = this.lexico.nextToken();
+        if (!token.getLexema().equals(")")) {
+            this.lexico.getColunaelinha(this.token.getLexema());
+            throw new RuntimeException(
+                    "Does not exists close paratheses of 'while' operator near: " + this.token.getLexema());
+        }
+        this.token = this.lexico.nextToken();
+
+        comando();
+    }
         private void relacional() throws FileNotFoundException {
             if (!this.token.getLexema().equals("if")) {
                 this.lexico.getColunaelinha(this.token.getLexema());
