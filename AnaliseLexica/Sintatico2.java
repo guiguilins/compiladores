@@ -126,7 +126,7 @@ public class Sintatico2 {
         }
         this.token = this.lexico.nextToken();
 
-        expressaoRelacional();
+        this.expressaoRelacional();
 
         this.token = this.lexico.nextToken();
         if (!token.getLexema().equals(")")) {
@@ -225,22 +225,58 @@ public class Sintatico2 {
    }
 
    private void exprAritmetica(){
-    if(!(this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
-       (this.token.getLexema().equals("int ") ||
-        this.token.getLexema().equals("float ") ||
-        this.token.getLexema().equals("char "))){
+    if((this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
+       (this.token.getTipo() == Token.TIPO_INTEIRO) ||
+       (this.token.getTipo() == Token.TIPO_REAL) ||
+       (this.token.getTipo() == Token.TIPO_CHAR)){
             this.termo();
-        }
-    if(!(this.token.getLexema().equals("+") || 
+       if((this.token.getLexema().equals("+") || 
        this.token.getLexema().equals("-"))){
-        throw new RuntimeException("Tava esperando um operador aritmético (+/-). Perto de: " 
-        + this.token.getLexema());
+        this.token = this.lexico.nextToken();
+        this.exprAritmetica();
+        }
     }
-    this.token = this.lexico.nextToken();
-    this.exprAritmetica();
+        else{
+            throw new RuntimeException("Erro na expressão aritmética. Perto de: " 
+                        + this.token.getLexema());
+     }
 }
 
    private void termo() {
+    if((this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
+    (this.token.getTipo() == Token.TIPO_INTEIRO) ||
+    (this.token.getTipo() == Token.TIPO_REAL) ||
+    (this.token.getTipo() == Token.TIPO_CHAR)){
+            this.fator();
+        if((this.token.getLexema().equals("*") || 
+          this.token.getLexema().equals("/"))){
+          this.token = this.lexico.nextToken();
+          this.exprAritmetica();
+       }
+    }
+    else{
+        throw new RuntimeException("Erro na expressão aritmética. Perto de: " 
+      + this.token.getLexema());
+    }
 }
 
+private void fator() {
+    if(this.token.getLexema().equals("(")){
+        this.exprAritmetica();
+        this.token = this.lexico.nextToken();
+    if(!this.token.getLexema().equals(")")){
+        throw new RuntimeException("Fecha o parêntese do teu fator");
+
+      }
+    }
+
+    else if(!(this.token.getTipo() == Token.TIPO_IDENTIFICADOR ||
+             this.token.getTipo() == Token.TIPO_INTEIRO ||
+             this.token.getTipo() == Token.TIPO_REAL ||
+             this.token.getTipo() == Token.TIPO_CHAR)){
+            throw new RuntimeException("Erro no fator. Perto de " +
+              this.token.getLexema());
+    }
+    this.token = this.lexico.nextToken();
+  }
 }
