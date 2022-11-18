@@ -1,5 +1,7 @@
  int main () {
   int a;
   int b;
-  int a
-  if( }   
+  int a;
+  if () 
+  while ()
+  }   

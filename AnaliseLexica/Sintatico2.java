@@ -170,7 +170,7 @@ public class Sintatico2 {
         }
         
         private void expressaoRelacional() throws FileNotFoundException {
-
+            
         }
 
     private void comandoBasico() throws FileNotFoundException{
