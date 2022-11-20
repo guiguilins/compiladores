@@ -221,8 +221,8 @@ public class Lexico {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_ATRIBUICAO);
                     }
-                case 13: // É 13!
-                       //this.back();
+                case 13: // É 13! 
+                       this.back();
                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                 case 14:
                        this.back();

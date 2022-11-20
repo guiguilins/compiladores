@@ -45,12 +45,15 @@ public class Sintatico2 {
         }
         this.token = this.lexico.nextToken();
         
-        while(this.token.getTipo() == Token.TIPO_PALAVRA_RESERVADA){
-            this.declaracao();
+        while((this.token.getLexema().equals("int ") ||
+               this.token.getLexema().equals("float ") ||
+               this.token.getLexema().equals("char "))){
+                 this.declaracao();
         }
         
-        while(this.token.getTipo() == Token.TIPO_IDENTIFICADOR){
-            this.comando();
+        while(this.token.getTipo() == Token.TIPO_IDENTIFICADOR ||
+              this.token.getTipo() == Token.TIPO_PALAVRA_RESERVADA){
+                this.comando();
         }
         
         if(!this.token.getLexema().equals("}")){
@@ -61,41 +64,40 @@ public class Sintatico2 {
 
     private void comando() throws FileNotFoundException{
         if((this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
-          (this.token.getLexema().equals("int ") ||
-           this.token.getLexema().equals("float ") ||
-           this.token.getLexema().equals("char "))){
+           (this.token.getTipo() == Token.TIPO_INTEIRO) ||
+           (this.token.getTipo() == Token.TIPO_REAL) ||
+           (this.token.getTipo() == Token.TIPO_CHAR)){
              this.comandoBasico();
         }
-        if (this.token.getLexema().equals("while ")) {
+       else if (this.token.getLexema().equals("while ")){
+            this.token = this.lexico.nextToken();
             this.iteracao();
         }
-        if(this.token.getLexema().equals("if ")){
+       else if(this.token.getLexema().equals("if ")){
             this.token = this.lexico.nextToken();
             if(this.token.getLexema().equals("(")){
+                this.token = this.lexico.nextToken();
                 this.relacional();
             }else{
                 throw new RuntimeException("Abre o parêntese do if ");
             }
             
             if(this.token.getLexema().equals(")")){
-                this.comando();
+                this.token = this.lexico.nextToken();
+                this.bloco();
             }else{
                 throw new RuntimeException("Fecha o parêntese do if ");
             }
             if(this.token.getLexema().equals("else ")){
-                this.comando();
-            }else{
-             throw new RuntimeException("Tá faltando um else perto de "
-             + this.token.getLexema());
+                this.token = this.lexico.nextToken();
+                this.bloco();
             }
-            this.token = this.lexico.nextToken();
         }
         else{
             throw new RuntimeException("Oxe, tava esperando tu declarar um comando perto de "
              + this.token.getLexema());
 
         }
-        
     }
 
     private void iteracao() throws FileNotFoundException{
@@ -108,70 +110,35 @@ public class Sintatico2 {
             throw new RuntimeException("Fecha o parentese do while");
         }
         this.token = this.lexico.nextToken();
-        this.comando();
+        this.bloco();
     }
 
 
-    private void comandoRepeticao() throws FileNotFoundException {
-        if (!this.token.getLexema().equals("while")) {
-            this.lexico.getColunaelinha(this.token.getLexema());
-            throw new RuntimeException("Word reserved wrong near: " + this.token.getLexema());
-        }
+    private void relacional() throws FileNotFoundException {
+        if(!(this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
+           (this.token.getTipo() == Token.TIPO_INTEIRO) ||
+           (this.token.getTipo() == Token.TIPO_REAL) ||
+           (this.token.getTipo() == Token.TIPO_CHAR)){
+           throw new RuntimeException("Tu vacilou na declaração relacional. Perto de: " 
+                  + this.token.getLexema());
+       }
+       this.exprAritmetica();
 
-        this.token = this.lexico.nextToken();
-        if (!token.getLexema().equals("(")) {
-            this.lexico.getColunaelinha(this.token.getLexema());
-            throw new RuntimeException(
-                    "Does not exists open paratheses of 'while' operator near: " + this.token.getLexema());
-        }
-        this.token = this.lexico.nextToken();
-
-        this.expressaoRelacional();
-
-        this.token = this.lexico.nextToken();
-        if (!token.getLexema().equals(")")) {
-            this.lexico.getColunaelinha(this.token.getLexema());
-            throw new RuntimeException(
-                    "Does not exists close paratheses of 'while' operator near: " + this.token.getLexema());
-        }
-        this.token = this.lexico.nextToken();
-
-        comando();
+    if(this.token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL){
+        throw new RuntimeException("Tu vacilou na declaração relacional. Perto de: " 
+                  + this.token.getLexema());
     }
-        private void relacional() throws FileNotFoundException {
-            if (!this.token.getLexema().equals("if")) {
-                this.lexico.getColunaelinha(this.token.getLexema());
-                throw new RuntimeException("Palavra reserva errada próxima: " + this.token.getLexema());
-            }
-    
-            this.token = this.lexico.nextToken();
-            if (!token.getLexema().equals("(")) {
-                this.lexico.getColunaelinha(this.token.getLexema());
-                throw new RuntimeException("Não existe parêntese aberta do operador 'if' próximo: " + this.token.getLexema());
-            }
-            this.token = this.lexico.nextToken();
-    
-            this.expressaoRelacional();
-            this.token = this.lexico.nextToken();
-            if (!token.getLexema().equals(")")) {
-                this.lexico.getColunaelinha(this.token.getLexema());
-                throw new RuntimeException("Não existe parêntese fechada do operador 'if' próximo: " + this.token.getLexema());
-            }
-    
-            this.token = this.lexico.nextToken();
-    
-            comando();
-            if (this.token.getLexema().equals("else")) {
-                this.token = this.lexico.nextToken();
-                comando();
-            } else {
-                return;
-            }
-        }
+    this.token = this.lexico.nextToken();
+
+    if((this.token.getTipo() == Token.TIPO_IDENTIFICADOR) ||
+           (this.token.getTipo() == Token.TIPO_INTEIRO) ||
+           (this.token.getTipo() == Token.TIPO_REAL) ||
+           (this.token.getTipo() == Token.TIPO_CHAR)){
+            this.termo();
+       }
+       
+}
         
-        private void expressaoRelacional() throws FileNotFoundException {
-            
-        }
 
     private void comandoBasico() throws FileNotFoundException{
         if(this.token.getTipo() == Token.TIPO_IDENTIFICADOR){

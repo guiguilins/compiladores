@@ -1,7 +1,5 @@
  int main () {
   int a;
-  int b;
-  int a;
-  if () 
-  while ()
+  while (a < 10) {
+    }
   }   
