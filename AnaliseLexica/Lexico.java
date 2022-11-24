@@ -128,7 +128,7 @@ public class Lexico {
                         estado = 99;
                         this.back();
                     }else{
-                        lexema.append(c);
+                        
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
                     }
                     break;
@@ -175,7 +175,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 6;
                     }else{
-                        lexema.append(c);
+                        
                         throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
                     }
                 case 6:             
@@ -214,13 +214,15 @@ public class Lexico {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                 case 12:
-                    if(c == '='){
+                     if(c == '='){
                         lexema.append(c);
-                        estado = 13; // É 13
+                        estado = 13;
                     }else{
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_ATRIBUICAO);
                     }
+                    break;
+                    
                 case 13: // É 13! 
                        this.back();
                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);

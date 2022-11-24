@@ -32,6 +32,8 @@ public class Sintatico2 {
         this.token = this.lexico.nextToken();
 
         this.bloco();
+        this.token = this.lexico.nextToken();
+
         if(this.token.getTipo() == Token.TIPO_FIM_CODIGO){
             System.out.println("O código tá massa! Arretado! Tu botou pra torar!");
         }else{
@@ -58,8 +60,8 @@ public class Sintatico2 {
         
         if(!this.token.getLexema().equals("}")){
             throw new RuntimeException("Oxe, tava esperando um \"}\" perto de "+ this.token.getLexema());
-        }
-        this.token = this.lexico.nextToken();
+        }   
+
 }
 
     private void comando() throws FileNotFoundException{
@@ -98,6 +100,8 @@ public class Sintatico2 {
              + this.token.getLexema());
 
         }
+        this.token = this.lexico.nextToken();
+        
     }
 
     private void iteracao() throws FileNotFoundException{
@@ -112,6 +116,7 @@ public class Sintatico2 {
         this.token = this.lexico.nextToken();
         this.bloco();
     }
+
 
 
     private void relacional() throws FileNotFoundException {
@@ -188,7 +193,7 @@ public class Sintatico2 {
         throw new RuntimeException("Erro na atribuição. Perto de: " 
           + this.token.getLexema());
       }
-      this.token = this.lexico.nextToken();
+     
    }
 
    private void exprAritmetica(){

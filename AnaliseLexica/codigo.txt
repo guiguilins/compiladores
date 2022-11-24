@@ -1,5 +1,8 @@
  int main () {
-  int a;
+int a;
   while (a < 10) {
+    if (a == 15){
+      a = a + 15;
     }
-  }   
+}   
+}
