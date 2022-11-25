@@ -32,7 +32,18 @@ public class Sintatico2 {
         this.token = this.lexico.nextToken();
 
         this.bloco();
+
         this.token = this.lexico.nextToken();
+
+        if(token.getLexema().equals("void")){
+            this.token = this.lexico.nextToken();
+            if(token.getTipo() == Token.TIPO_IDENTIFICADOR){
+                this.token = this.lexico.nextToken();
+                this.bloco();
+                this.token = this.lexico.nextToken();
+            }
+        }
+        
 
         if(this.token.getTipo() == Token.TIPO_FIM_CODIGO){
             System.out.println("O código tá massa! Arretado! Tu botou pra torar!");
@@ -101,7 +112,7 @@ public class Sintatico2 {
 
         }
         this.token = this.lexico.nextToken();
-        
+
     }
 
     private void iteracao() throws FileNotFoundException{
@@ -251,4 +262,8 @@ private void fator() {
     }
     this.token = this.lexico.nextToken();
   }
+
+//   private void escopo(){
+    
+//   }
 }
